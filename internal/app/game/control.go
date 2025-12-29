@@ -11,7 +11,14 @@ import (
 
 func HandleInput(jumpChan chan bool, exitChan chan bool) {
 	for {
-		char, key, _ := keyboard.GetKey()
+		char, key, err := keyboard.GetKey()
+		if err != nil {
+			select {
+			case exitChan <- true:
+			default:
+			}
+			return
+		}
 
 		if key == keyboard.KeySpace || char == ' ' {
 			jumpChan <- true

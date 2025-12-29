@@ -28,8 +28,8 @@ func main() {
 		groundSpeed         int           = 1
 		gameSpeed           time.Duration = 15
 		delayBetweenEnemies int           = 20
-		jumpChan            chan bool     = make(chan bool)
-		exitChan            chan bool     = make(chan bool)
+		jumpChan            chan bool     = make(chan bool, 1)
+		exitChan            chan bool     = make(chan bool, 1)
 		dino                sprites.SpriteDino
 		cactuses            sprites.SpriteCactuses
 		pteranodons         sprites.SpritePteranodons
@@ -45,6 +45,8 @@ func main() {
 	// Set up the deferred end sequence
 	defer func() {
 		scores.Stop()
+		spawnCactusTicker.Stop()
+		spawnPteraTicker.Stop()
 		_ = keyboard.Close()
 		gameOverScore = scores.Print()
 		game.HandleGameOver(gameOverScore)
