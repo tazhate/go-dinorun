@@ -49,11 +49,12 @@ func HandleGameOver(score int) {
 					fmt.Printf("%d. %-20s %d\n", i+1, score.Name, score.Score)
 				}
 				fmt.Println("--------------------")
-				fmt.Println("Press any key to exit...")
-				return
 			}
 		}
 	}
+
+	fmt.Println("Press Enter to exit...")
+	_, _ = bufio.NewReader(os.Stdin).ReadString('\n')
 }
 
 // GetPlayerName prompts for and returns the player's name

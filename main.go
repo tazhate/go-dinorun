@@ -45,9 +45,9 @@ func main() {
 	// Set up the deferred end sequence
 	defer func() {
 		scores.Stop()
+		_ = keyboard.Close()
 		gameOverScore = scores.Print()
 		game.HandleGameOver(gameOverScore)
-		_ = keyboard.Close()
 	}()
 
 	dino.Init(30)
