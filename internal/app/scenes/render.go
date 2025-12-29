@@ -79,7 +79,7 @@ func AreClashing(
 	return false
 }
 
-// RenderFinalFrame renders the last frame of the game with the game over message
+// RenderFinalFrame renders the last frame of the game
 // while maintaining the alternate buffer to prevent scrollback
 func RenderFinalFrame(scene []string, score int) {
 	var output strings.Builder
@@ -94,9 +94,6 @@ func RenderFinalFrame(scene []string, score int) {
 		output.WriteString(line + "\n")
 	}
 
-	// Print game over message below the frame
-	output.WriteString("\nGame Over!\n")
-	output.WriteString("Press any key to exit...")
 	fmt.Print(output.String())
 }
 

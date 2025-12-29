@@ -11,7 +11,14 @@ import (
 
 func HandleInput(jumpChan chan bool, exitChan chan bool) {
 	for {
-		char, key, _ := keyboard.GetKey()
+		char, key, err := keyboard.GetKey()
+		if err != nil {
+			select {
+			case exitChan <- true:
+			default:
+			}
+			return
+		}
 
 		if key == keyboard.KeySpace || char == ' ' {
 			jumpChan <- true
@@ -49,11 +56,12 @@ func HandleGameOver(score int) {
 					fmt.Printf("%d. %-20s %d\n", i+1, score.Name, score.Score)
 				}
 				fmt.Println("--------------------")
-				fmt.Println("Press any key to exit...")
-				return
 			}
 		}
 	}
+
+	fmt.Println("Press Enter to exit...")
+	_, _ = bufio.NewReader(os.Stdin).ReadString('\n')
 }
 
 // GetPlayerName prompts for and returns the player's name
