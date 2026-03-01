@@ -189,10 +189,10 @@ func runGame(immortal bool, gameSpeed time.Duration, groundSpeed, delayCactus, d
 }
 
 func main() {
-	immortal  := flag.Bool("immortal", false, "god mode: no collision detection")
-	speed     := flag.Int("speed", 5, "game speed 1 (slow) .. 10 (insane)")
+	immortal := flag.Bool("immortal", false, "god mode: no collision detection")
+	speed := flag.Int("speed", 5, "game speed 1 (slow) .. 10 (insane)")
 	noEnemies := flag.Bool("no-enemies", false, "disable all enemies")
-	goal      := flag.Int("goal", 1000, "score goal for progress bar (0 = disable bar)")
+	goal := flag.Int("goal", 1000, "score goal for progress bar (0 = disable bar)")
 	flag.Parse()
 
 	if *speed < 1 {
@@ -202,9 +202,9 @@ func main() {
 		*speed = 10
 	}
 
-	gameSpeed       := time.Duration(44 - (*speed * 4))
-	groundSpeed     := 1 + (*speed / 4)
-	delayCactus     := 700 - (*speed * 50)
+	gameSpeed := time.Duration(44 - (*speed * 4))
+	groundSpeed := 1 + (*speed / 4)
+	delayCactus := 700 - (*speed * 50)
 	delayPteranodon := 1400 - (*speed * 100)
 
 	if err := keyboard.Open(); err != nil {

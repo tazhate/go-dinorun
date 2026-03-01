@@ -17,7 +17,6 @@ func (spteras *SpritePteranodons) Update() {
 		}
 	}
 	spteras.Group = activePteras
-	return
 }
 
 func (spteras *SpritePteranodons) Add(sptera SpritePteranodon) {

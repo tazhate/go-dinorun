@@ -13,7 +13,7 @@ type winsize struct {
 
 func getTermWidth() int {
 	ws := &winsize{}
-	syscall.Syscall(syscall.SYS_IOCTL, 1, 0x5413, uintptr(unsafe.Pointer(ws)))
+	_, _, _ = syscall.Syscall(syscall.SYS_IOCTL, 1, 0x5413, uintptr(unsafe.Pointer(ws)))
 	if ws.Col > 0 {
 		return int(ws.Col)
 	}
@@ -46,7 +46,7 @@ func hslToRgb(h, s, l float64) (int, int, int) {
 		}
 		return int(v + 0.5)
 	}
-	return clamp((r1+m)*255), clamp((g1+m)*255), clamp((b1+m)*255)
+	return clamp((r1 + m) * 255), clamp((g1 + m) * 255), clamp((b1 + m) * 255)
 }
 
 var subBlocks = []rune{' ', '▏', '▎', '▍', '▌', '▋', '▊', '▉', '█'}

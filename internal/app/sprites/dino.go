@@ -41,7 +41,7 @@ func (sdino *SpriteDino) increment() {
 
 func (sdino *SpriteDino) firstHalfOrNot() bool {
 	// Get the limit and halven it
-	halfLim := float32(sdino.frameLimit)/2-1
+	halfLim := float32(sdino.frameLimit)/2 - 1
 	// Check the current frameCount
 	return float32(sdino.frameCount) <= halfLim
 }
