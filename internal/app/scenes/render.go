@@ -16,35 +16,31 @@ func RenderGame(
 	pteranodons *sprites.SpritePteranodons,
 	scores *game.GameScores,
 	exitChan chan bool,
+	progressBar string,
 ) {
 	scene := make([]string, *MaxY)
 	for i := range scene {
 		scene[i] = strings.Repeat(" ", *MaxX)
 	}
 
-	// Print the dino sprite
 	printSprite(5, *spriteDinoY, dino.Render(), scene)
-
-	// Print the ground as sprite
 	printSprite(0, *MaxY-1, ground.Render(*groundSpeed), scene)
 
-	// Print the cactuses
 	for _, cactus := range cactuses.Group {
-		cactusXoffset := cactus.Xoffset
-		printSprite(cactusXoffset, *MaxY-1, cactus.Render(), scene)
+		printSprite(cactus.Xoffset, *MaxY-1, cactus.Render(), scene)
+	}
+	for _, ptera := range pteranodons.Group {
+		printSprite(ptera.Xoffset, *MaxY-1, ptera.Render(), scene)
 	}
 
-	// Print the pteranodons
-	for _, ptera := range pteranodons.Group {
-		pteraXoffset := ptera.Xoffset
-		printSprite(pteraXoffset, *MaxY-1, ptera.Render(), scene)
-	}
-	// Terminal screen update with enhanced buffer control
 	var output strings.Builder
-	output.WriteString("\u001B[?1049h") // Enable alternate screen buffer
-	output.WriteString("\u001B[?25l")   // Hide cursor
-	output.WriteString("\u001B[2J")     // Clear screen
-	output.WriteString("\u001B[H")      // Move cursor to home position
+	output.WriteString("\u001B[?1049h")
+	output.WriteString("\u001B[?25l")
+	output.WriteString("\u001B[2J")
+	output.WriteString("\u001B[H")
+	if progressBar != "" {
+		output.WriteString(progressBar + "\n")
+	}
 	output.WriteString(fmt.Sprintf("Score: %d\n", scores.Print()))
 	for _, line := range scene {
 		output.WriteString(line + "\n")
@@ -58,18 +54,15 @@ func AreClashing(
 	cactuses *sprites.SpriteCactuses,
 	pteranodons *sprites.SpritePteranodons,
 ) bool {
-	// Check if there's any clash
 	dinoCells := extractSpriteCells(5, *spriteDinoY, dino.Render())
 	var cactusCells [][2]int
 	var pteraCells [][2]int
-	// Clash with the cactus
 	for _, cactus := range cactuses.Group {
 		cactusCells = extractSpriteCells(cactus.Xoffset, *MaxY-1, cactus.Render())
 		if shareChild(dinoCells, cactusCells) {
 			return true
 		}
 	}
-	// Clash with the pteranodons
 	for _, ptera := range pteranodons.Group {
 		pteraCells = extractSpriteCells(ptera.Xoffset, *MaxY-1, ptera.Render())
 		if shareChild(dinoCells, pteraCells) {
@@ -79,21 +72,19 @@ func AreClashing(
 	return false
 }
 
-// RenderFinalFrame renders the last frame of the game
-// while maintaining the alternate buffer to prevent scrollback
-func RenderFinalFrame(scene []string, score int) {
+// RenderFinalFrame renders the last frame with optional progress bar.
+func RenderFinalFrame(scene []string, score int, progressBar string) {
 	var output strings.Builder
-	// Stay in alternate buffer, just clear and redraw
-	output.WriteString("\u001B[2J")   // Clear screen
-	output.WriteString("\u001B[H")    // Move cursor to home position
-	output.WriteString("\u001B[?25h") // Show cursor
-
-	// Print the final scene
+	output.WriteString("\u001B[2J")
+	output.WriteString("\u001B[H")
+	output.WriteString("\u001B[?25h")
+	if progressBar != "" {
+		output.WriteString(progressBar + "\n")
+	}
 	output.WriteString(fmt.Sprintf("Score: %d\n", score))
 	for _, line := range scene {
 		output.WriteString(line + "\n")
 	}
-
 	fmt.Print(output.String())
 }
 
@@ -109,18 +100,12 @@ func RenderFinalScene(maxX, maxY, spriteDinoY, groundSpeed int,
 		finalScene[i] = strings.Repeat(" ", maxX)
 	}
 
-	// Print the dino sprite
 	printSprite(5, spriteDinoY, dino.Render(), finalScene)
-
-	// Print the ground as sprite
 	printSprite(0, maxY-1, ground.Render(groundSpeed), finalScene)
 
-	// Print the cactuses
 	for _, cactus := range cactuses.Group {
 		printSprite(cactus.Xoffset, maxY-1, cactus.Render(), finalScene)
 	}
-
-	// Print the pteranodons
 	for _, ptera := range pteranodons.Group {
 		printSprite(ptera.Xoffset, maxY-1, ptera.Render(), finalScene)
 	}
