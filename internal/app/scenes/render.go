@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ahmad-alkadri/go-dinorun/internal/app/game"
-	"github.com/ahmad-alkadri/go-dinorun/internal/app/sprites"
+	"github.com/tazhate/go-dinorun/internal/app/game"
+	"github.com/tazhate/go-dinorun/internal/app/sprites"
 )
 
 func RenderGame(

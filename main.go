@@ -7,9 +7,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ahmad-alkadri/go-dinorun/internal/app/game"
-	"github.com/ahmad-alkadri/go-dinorun/internal/app/scenes"
-	"github.com/ahmad-alkadri/go-dinorun/internal/app/sprites"
+	"github.com/tazhate/go-dinorun/internal/app/game"
+	"github.com/tazhate/go-dinorun/internal/app/scenes"
+	"github.com/tazhate/go-dinorun/internal/app/sprites"
 
 	"github.com/eiannone/keyboard"
 )

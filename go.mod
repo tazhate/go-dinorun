@@ -1,4 +1,4 @@
-module github.com/ahmad-alkadri/go-dinorun
+module github.com/tazhate/go-dinorun
 
 go 1.22
 

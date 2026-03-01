@@ -1,0 +1,77 @@
+version: 2
+
+project_name: go-dinorun
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: go-dinorun
+    binary: go-dinorun
+    goos:
+      - linux
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -s -w
+      - -X main.version={{.Version}}
+      - -X main.commit={{.Commit}}
+      - -X main.date={{.Date}}
+
+archives:
+  - id: default
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - README.md
+      - LICENSE
+
+checksum:
+  name_template: "checksums.txt"
+
+changelog:
+  sort: asc
+  use: github
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^chore:"
+      - Merge pull request
+      - Merge branch
+  groups:
+    - title: "New Features"
+      regexp: "^feat"
+      order: 0
+    - title: "Bug Fixes"
+      regexp: "^fix"
+      order: 1
+    - title: "Other"
+      order: 999
+
+release:
+  github:
+    owner: tazhate
+    name: go-dinorun
+  name_template: "v{{ .Version }}"
+  header: |
+    ## go-dinorun-tuned {{ .Tag }}
+
+    Chrome Dino in your terminal — with gradient progress bar, speed control, god mode, and instant restart.
+
+    ### Install
+
+    ```sh
+    go install github.com/tazhate/go-dinorun@{{ .Tag }}
+    ```
+
+    Or grab a binary below.
+  footer: |
+    **Full changelog**: https://github.com/tazhate/go-dinorun/compare/{{ .PreviousTag }}...{{ .Tag }}
